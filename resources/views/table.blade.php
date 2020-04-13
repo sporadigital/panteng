@@ -177,43 +177,43 @@ table thead tr>* {
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 <script>
-jQuery(document).ready(function($) {
-    $('#table').DataTable({
-        "searching": false,
-        "scrollX": true,
-        "columnDefs": [{
-            "targets": [3, 4, 8, 11, 12, 16, 17, 18, 19, 22],
-            "visible": false,
-        }],
-        "language": {
-            "emptyTable": "Belum ada data masuk",
-            "info": "Menampilkan _START_ - _END_ dari _TOTAL_",
-            "infoEmpty": "",
-            "lengthMenu": "Tampilkan _MENU_",
-            "paginate": {
-                "first": "Pertama",
-                "last": "Terakhir",
-                "next": "Lanjut",
-                "previous": "Balik"
-            },
-        }
-    });
-    $('#table tbody tr').click(function(){
-        var rid = $(this).data('id');
-        //$('#detailModal').modal('show');
-        $.ajax({
-    		url: "{{ route('detail') }}",
-    		dataType: 'json',
-    		data: {
-    			id: rid
-    		},
-    		success: function(data){
-    		    $(data).appendTo( $('#detailModal .modal-body') );
-    			$('#detailModal').modal('show');
-    		}
-    	});
-    });
-});
+// jQuery(document).ready(function($) {
+//     $('#table').DataTable({
+//         "searching": false,
+//         "scrollX": true,
+//         "columnDefs": [{
+//             "targets": [3, 4, 8, 11, 12, 16, 17, 18, 19, 22],
+//             "visible": false,
+//         }],
+//         "language": {
+//             "emptyTable": "Belum ada data masuk",
+//             "info": "Menampilkan _START_ - _END_ dari _TOTAL_",
+//             "infoEmpty": "",
+//             "lengthMenu": "Tampilkan _MENU_",
+//             "paginate": {
+//                 "first": "Pertama",
+//                 "last": "Terakhir",
+//                 "next": "Lanjut",
+//                 "previous": "Balik"
+//             },
+//         }
+//     });
+//     $('#table tbody tr').click(function(){
+//         var rid = $(this).data('id');
+//         //$('#detailModal').modal('show');
+//         $.ajax({
+//     		url: "{{ route('detail') }}",
+//     		dataType: 'json',
+//     		data: {
+//     			id: rid
+//     		},
+//     		success: function(data){
+//     		    $(data).appendTo( $('#detailModal .modal-body') );
+//     			$('#detailModal').modal('show');
+//     		}
+//     	});
+//     });
+// });
 
 $('#detailModal').on('hidden.bs.modal', function(e) {
     $(this).find('.modal-body').empty();
