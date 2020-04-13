@@ -1,0 +1,68 @@
+.page {
+    color: #fff;
+    background: #2c2261 url('../images/bg.jpg') 50% 50%/cover no-repeat;
+    overflow: hidden;
+}
+
+.navbar {
+    background: red !important;
+    border-bottom: 0.25rem solid white;
+}
+
+.page-bot {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.jumbotron hr {
+    position: relative;
+}
+.jumbotron hr::before {
+    content: "";
+    display: block;
+    width: 4rem;
+    height: 0.25rem;
+    background: yellow;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.jumbotron .btn {
+    min-width: 12rem;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.jumbotron.bg-custom {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+
+.card {
+    background: rgba(0, 0, 0, 0.3);
+}
+.card .btn {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.card .list-group-item {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 768px) {
+    .welcome .page-bot .container {
+        position: relative;
+        z-index: 1;
+    }
+    .welcome .page-bot .container::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: calc(100vh - 15rem);
+        background: url('../images/sd.png') 0% 100%/contain no-repeat;
+        position: absolute;
+        left: 50%;
+        bottom: 2rem;
+        z-index: -1;
+    }
+}

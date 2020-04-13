@@ -1,0 +1,27 @@
+$body-bg: #fcfcfc;
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.5;
+
+// $primary: #3f51b5;
+$primary: #1976d2;
+$secondary: #f50057;
+
+$success: #4caf50;
+$info: #2196f3;
+$warning: #ff9800;
+$danger: #f44336;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+//   lg: 960px,
+//   xl: 1140px
+);
+
+$font-size-lg: $font-size-base * 1.1;
+
+$display1-size: 4rem;
+$display2-size: 3.5rem;
+$display3-size: 3rem;
+$display4-size: 2.5rem;

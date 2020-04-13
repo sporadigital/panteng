@@ -1,0 +1,34 @@
+html {
+    font-size: 13px;
+
+    @media (min-width: 768px) {
+        font-size: 15px;
+    }
+}
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    &-bot {
+        margin-top: auto;
+    }
+}
+
+.wizard {
+    .steps {
+        .number,
+        .current-info {
+            display: none;
+        }
+    }
+    .actions {
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

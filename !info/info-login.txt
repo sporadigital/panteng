@@ -1,0 +1,7 @@
+Utk admin
+U: admin
+P: spora.id
+
+Utk tamu
+U: tamu
+P: spora.id

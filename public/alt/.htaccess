@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(.*)$ https://docs.google.com/forms/d/e/1FAIpQLSfusqezc973N8KLNKn0GfoWJUNjK2RavPPxxd8sG2Y_3La1gQ/viewform [L]
+</IfModule>
