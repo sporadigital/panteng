@@ -8,6 +8,7 @@ use App\Rombongan;
 use App\User;
 use App\Exports\DataExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Hash;
 use Auth;
 
 class HomeController extends Controller {
@@ -22,6 +23,36 @@ class HomeController extends Controller {
 
         return view('home', ['admin' => User::where('id', 1)->first(), 'guest' => User::where('id', 2)->first()]);
     }
+
+    public function admin_edit(Request $request) {
+ 		
+		$admin = User::where('id', $request->admin_id)->first();
+		$request->validate([
+			'pass_new_admin' => 'required|min:6',
+		], [
+			'pass_new_admin.required' => 'Harus diisi. Minimal 6 karakter.',
+			'pass_new_admin.min' => 'Minimal 6 karakter.',
+		]);
+		// dd($request->pass_new_admin);
+		User::where('id', $request->admin_id)->update(['password' => Hash::make($request->pass_new_admin)]);
+		
+		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi telah diganti.');
+	}
+
+    public function user_edit(Request $request) {
+		
+		$user = User::where('id', $request->user_id)->first();
+		$request->validate([
+			'pass_new_user' => 'required|min:6',
+		], [
+			'pass_new_user.required' => 'Harus diisi. Minimal 6 karakter.',
+			'pass_new_user.min' => 'Minimal 6 karakter.',
+		]);
+
+		User::where('id', $request->user_id)->update(['password' => Hash::make($request->pass_new_user)]);
+		
+		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi telah diganti.');
+	}
     
     public function table() {
         return view('table', ['datas' => Pendatang::get()]);
