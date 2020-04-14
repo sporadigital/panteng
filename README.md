@@ -4,3 +4,8 @@
 
 - Petunjuk instalasi silahkan baca [di sini](https://github.com/sporadigital/panteng/wiki).
 - Butuh bantuan? Silahkan [kontak kami](http://sporaenterprise.com/kontak-kami-2/).
+
+### Demo
+[panteng.spora.id](http://panteng.spora.id/)
+- Username: tamu
+- Password: tamu
