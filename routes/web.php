@@ -25,5 +25,7 @@ Route::get('/home', 'HomeController@table')->name('home');
 Route::post('/home', 'HomeController@table_unduh');
 Route::get('/data', 'HomeController@table_data')->name('data');
 Route::get('/pass', 'HomeController@index')->name('pass');
+Route::post('/pass_admin', 'HomeController@admin_edit')->name('adminedit');
+Route::post('/pass_user', 'HomeController@user_edit')->name('useredit');
 Route::get('/detil', 'HomeController@detail')->name('detail');
 Route::post('/hapus', 'HomeController@remove')->name('remove');
