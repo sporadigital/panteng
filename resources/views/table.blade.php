@@ -99,6 +99,10 @@ var table = $('#table').DataTable({
     "searching": false,
     "scrollX": true,
     "rowId": 'id',
+    "columnDefs": [ {
+        "targets": [3,8],
+        "orderable": false
+    } ],
     "language": {
         "emptyTable": "Belum ada data masuk",
         "info": "Menampilkan _START_ - _END_ dari _TOTAL_",
