@@ -27,12 +27,51 @@ class HomeController extends Controller {
         return view('table', ['datas' => Pendatang::get()]);
     }
     
+    public function table_data() {
+		$results = [];
+		$datas = Pendatang::get();
+		if( count($datas) ) {
+			foreach( $datas as $idx=>$data ) {
+				$results[] = [
+					'id' => 'data-'. $data->id,
+					$idx+1,
+					strtoupper($data->sender_fname),
+					strtoupper($data->sender_nname),
+					$data->sender_phone,
+					strtoupper($data->object_fname),
+					strtoupper($data->object_nname),
+					$data->object_umur,
+					strtoupper($data->object_alasal),
+					$data->object_nope,
+					$data->object_jumlah,
+					strtoupper($data->note_asal),
+					strtoupper($data->note_moda),
+					strtoupper($data->note_tinggal),
+					$data->created_at->format('d M Y H:i:s')
+				];
+			}
+		}
+		
+        $content = json_encode(['data' => $results]);
+		return response($content)->header('Content-Type', 'application/json');
+    }
+    
     public function table_unduh() {
         if( 1 != Auth::user()->id )
             abort(403);
 
         $ndate = date('Y-m-d_H-i-s');
         return Excel::download(new DataExport, 'data_pemudik_'. $ndate .'.xlsx');
+    }
+    
+    public function remove(Request $request) {
+		$id_remove = $request->id;
+		Rombongan::where('id_pendatang', $id_remove)->delete();
+		Pendatang::where('id', $id_remove)->delete();
+
+		$respond = 'sip';
+		$content = json_encode($respond);
+		return response($content)->header('Content-Type', 'application/json');
     }
     
     public function detail(Request $request) {
