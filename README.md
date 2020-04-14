@@ -7,5 +7,5 @@
 
 ### Demo
 [panteng.spora.id](http://panteng.spora.id/)
-- Username: tamu
-- Password: tamu
+- Username: `tamu`
+- Password: `permisi`
