@@ -33,25 +33,25 @@ class HomeController extends Controller {
 			'pass_new_admin.required' => 'Harus diisi. Minimal 6 karakter.',
 			'pass_new_admin.min' => 'Minimal 6 karakter.',
 		]);
-		// dd($request->pass_new_admin);
-		User::where('id', $request->admin_id)->update(['password' => Hash::make($request->pass_new_admin)]);
+
+        User::where('id', $request->admin_id)->update(['password' => Hash::make($request->pass_new_admin)]);
 		
-		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi telah diganti.');
+		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi ADMIN telah diganti.');
 	}
 
     public function user_edit(Request $request) {
 		
 		$user = User::where('id', $request->user_id)->first();
 		$request->validate([
-			'pass_new_user' => 'required|min:6',
+			'pass_new_user' => 'required|min:4',
 		], [
-			'pass_new_user.required' => 'Harus diisi. Minimal 6 karakter.',
-			'pass_new_user.min' => 'Minimal 6 karakter.',
+			'pass_new_user.required' => 'Harus diisi. Minimal 4 karakter.',
+			'pass_new_user.min' => 'Minimal 4 karakter.',
 		]);
 
 		User::where('id', $request->user_id)->update(['password' => Hash::make($request->pass_new_user)]);
 		
-		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi telah diganti.');
+		return back()->with('status', '<strong>SUKSES!</strong> Kata sandi TAMU telah diganti.');
 	}
     
     public function table() {
