@@ -20,7 +20,7 @@
     </div>
 
     <div class="card mb-3">
-        <form id="advanced-form" method="post" action="{{ url()->current() }}">
+        <form id="advanced-form" method="post" action="{{ url()->current() }}" enctype="multipart/form-data">
             @csrf
             <h3 class="d-none">PENGINPUT</h3>
             <fieldset>
@@ -170,9 +170,9 @@
                         </li>
                         <li>
                             <div class="custom-control custom-radio">
-                                <input type="radio" value="TEMPAT ISOLASI/KARANTINA" name="note_tempat" id="note-tempat3"
+                                <input type="radio" value="TEMPAT ISOLASI/KARANTINA" name="note_tempat" id="note-tempat4"
                                     class="custom-control-input" required />
-                                <label class="custom-control-label" for="note-tempat3">TEMPAT ISOLASI/KARANTINA</label>
+                                <label class="custom-control-label" for="note-tempat4">TEMPAT ISOLASI/KARANTINA</label>
                             </div>
                         </li>
                         <li>
@@ -196,6 +196,13 @@
 
                 <ul class="list-group list-anggota">
                 </ul>
+            </fieldset>
+
+            <h3 class="d-none">FOTO</h3>
+            <fieldset>
+                <div class="foto-wrapper">
+                    <input type="file" name="foto" class="dropify" data-allowed-file-extensions="jpg jpeg" data-max-file-size="2M" data-height="200" />
+                </div>
             </fieldset>
 
         </form>
@@ -394,6 +401,7 @@
 
 @section('header')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/smartwizard@4.4.1/dist/css/smart_wizard.min.css">
 <style>
 .list-anggota {
@@ -424,9 +432,18 @@
 @media (max-width: 767px) {
     .steps .nav-link {
         font-size: 0.8em;
-        padding-left: 0.75em;
-        padding-right: 0.75em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
     }
+}
+
+.foto-wrapper {
+    max-width: 300px;
+    margin: auto;
+}
+.dropify-wrapper {
+    font-size: 12px;
+    line-height: 1.5;
 }
 </style>
 @endsection
@@ -435,10 +452,26 @@
 @section('footer')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
+var _dropify_messages = {
+	'default': 'Tarik dan jatuhkan berkas di sini atau klik',
+	'replace': 'Tarik dan jatuhkan berkas atau klik untuk mengganti',
+	'remove': 'Hapus',
+	'error': 'Ups, terjadi kesalahan.'
+}
+var _dropify_error = {
+	'fileSize': 'Ukuran berkas terlalu besar (maks. {'+'{ value }}b).',
+	'minWidth': 'Lebar gambar terlalu kecil (min. {'+'{ value }}px).',
+	'maxWidth': 'Lebar gambar terlalu besar (maks. {'+'{ value }}px).',
+	'minHeight': 'Tinggi gambar terlalu kecil (min. {'+'{ value }}px).',
+	'maxHeight': 'Tinggi gambar terlalu besar (maks. {'+'{ value }}px).',
+	'imageFormat': 'Format gambar tidak diijinkan (hanya {'+'{ value }}).',
+	'fileExtension': 'Berkas tidak diijinkan (hanya {'+'{ value }}).'
+}
 jQuery.datetimepicker.setLocale('id');
 jQuery.validator.addMethod("nik", function(value, element) {
     var cek = /^((\d{6})-(\d{6})-(\d{4}))$/.test(value); 
@@ -498,6 +531,10 @@ form.steps({
                 $(this).addClass('btn-lg text-uppercase');
             }
         });
+        form.find('.dropify').dropify({
+            messages: _dropify_messages,
+            error: _dropify_error
+        });
 
         $('.nikfield').inputmask({"mask": "999999-999999-9999"});
         $('.phonefield').inputmask({"mask": "9999 9999 9{2,5}"});
@@ -548,7 +585,7 @@ form.steps({
 
         if (currentIndex == 3) {
             cloneForm();
-        } else {
+        } else if (currentIndex < 3) {
             clearForm();
         }
     },

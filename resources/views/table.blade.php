@@ -126,7 +126,7 @@ $('#table').on('click', 'tr', function() {
         },
         success: function(data) {
             $(data).appendTo($('#detailModal .modal-body'));
-            $('#detailModal').attr('data-id', rid);
+            $('#detailModal .modal-footer .btn-danger').attr('onclick', 'removeData('+rid+')');
             $('#detailModal').modal('show');
         }
     });
@@ -134,29 +134,30 @@ $('#table').on('click', 'tr', function() {
 
 $('#detailModal').on('hidden.bs.modal', function(e) {
     $(this).find('.modal-body').empty();
-    $(this).removeAttr('data-id');
+    $(this).find('.modal-footer .btn-danger').removeAttr('onclick');
 });
 
 @if( 1 == Auth::user()->id )
-$('#detailModal .btn-danger').click(function(e) {
-    var id = $(this).parents('.modal').data('id');
-    $('#detailModal').modal('hide');
-    $.ajax({
-        url: "{{ route('remove') }}",
-        type: "POST",
-        data: {
-            "_token": "{{ csrf_token() }}",
-            id: id
-        },
-        success: function(data) {
-            $('#notifModal').modal('show');
-        }
-    });
-});
-
 $('#notifModal').on('hidden.bs.modal', function(e) {
     table.ajax.reload(null);
 });
+
+function removeData(id) {
+    if ( confirm('Yakin akan menghapus data ini?') ) {
+        $('#detailModal').modal('hide');
+        $.ajax({
+            url: "{{ route('remove') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                id: id
+            },
+            success: function(data) {
+                $('#notifModal').modal('show');
+            }
+        });
+    }
+}
 @endif
 </script>
 @endsection

@@ -100,6 +100,7 @@ CREATE TABLE `pendatang` (
   `note_moda` varchar(250) DEFAULT NULL,
   `note_tinggal` varchar(250) DEFAULT NULL,
   `note_tempat` varchar(250) DEFAULT NULL,
+  `foto` varchar(250) DEFAULT NULL,
   `ip` varchar(100) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,

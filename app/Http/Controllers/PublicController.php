@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pendatang;
 use App\Rombongan;
+use File;
 
 class PublicController extends Controller {
     public function __construct() {
@@ -60,9 +61,36 @@ class PublicController extends Controller {
                 'sakit' => strtoupper($request->otr_sakit[$otr_id])
             ]); 
         }
-
+        
+        if ( $foto_file = $request->file('foto') ) {
+            if ( $foto_name = PublicController::insert_file($foto_file) ) {
+				Pendatang::where('id', $data->id)->update([ 'foto' => $foto_name ]);
+            }
+        }
+        
         return back()->with('stat','sip');
     }
-
+	
+	public static function insert_file( $file ) {
+		if ( !$file )
+			return false;
+		
+		$uid = strtotime("now");
+		$file_up_name = $file->getClientOriginalName();
+		$file_up_parts = pathinfo($file_up_name);
+		$file_ext = $file_up_parts['extension'];
+		$file_name = sprintf('%2$s-%1$s', PublicController::filename($file_up_parts['filename']), $uid);
+		$file_name_full = sprintf('%1$s.%2$s', $file_name, $file_ext);
+		if ( $file->move('uploads/', $file_name_full) ) {
+			return $file_name_full;
+		} else {
+			return false;
+		}
+	}
     
+	public static function filename( $text = '' ) {
+		if ( !$text )
+			return false;
+		return preg_replace( '/[^a-zA-Z0-9_\-]/', '_', $text );
+	}
 }

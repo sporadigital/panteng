@@ -10,6 +10,7 @@ use App\Exports\DataExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Hash;
 use Auth;
+use File;
 
 class HomeController extends Controller {
     
@@ -97,8 +98,12 @@ class HomeController extends Controller {
     
     public function remove(Request $request) {
 		$id_remove = $request->id;
+        $foto = Pendatang::where('id', $id_remove)->get('foto')->first();
 		Rombongan::where('id_pendatang', $id_remove)->delete();
 		Pendatang::where('id', $id_remove)->delete();
+        if ( $foto->foto && file_exists( public_path('uploads/' . $foto->foto) ) ) {
+            File::delete( public_path('uploads/' . $foto->foto) );
+        }
 
 		$respond = 'sip';
 		$content = json_encode($respond);
@@ -109,8 +114,40 @@ class HomeController extends Controller {
         $data = Pendatang::where('id', $request->id)->first();
         if ( !$data )
             abort(404);
+        
+        $html = '';
+        $has_foto = $data->foto && file_exists( public_path('uploads/' . $data->foto) ) ? true : false;
+        
+        $html .= '
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#detail-biodata">BIODATA</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#detail-perjalanan">PERJALANAN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#detail-rombongan">ROMBONGAN</a>
+                </li>
+        ';
+        if ( $has_foto ) {
+            $html .= '
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#detail-foto">FOTO</a>
+                </li>
+            ';
+        }
+        $html .= '
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#detail-penginput">PENGINPUT</a>
+                </li>
+            </ul>
+        ';
+        
+		$html .= '<div class="tab-content pt-3">';
             
-		$html = '
+		$html .= '
+        <div class="tab-pane fade show active" id="detail-biodata">
 		    <h5>BIODATA KEPALA KELUARGA/ KETUA ROMBONGAN</h5>
 			<table class="table table-sm border-bottom">
 				<tr>
@@ -150,9 +187,10 @@ class HomeController extends Controller {
 					<th>'. $data->object_jumlah .'</th>
 				</tr>
 			</table>
-		';
+		</div>';
             
 		$html .= '
+        <div class="tab-pane fade" id="detail-perjalanan">
 		    <h5>RIWAYAT PERJALANAN</h5>
 			<table class="table table-sm border-bottom">
 				<tr>
@@ -188,28 +226,29 @@ class HomeController extends Controller {
 					<th>'. $data->note_tempat .'</th>
 				</tr>
 			</table>
-		';
+		</div>';
 			
 		$html .= '
+        <div class="tab-pane fade" id="detail-rombongan">
 		    <h5>KONDISI KESEHATAN SELURUH ANGGOTA ROMBONGAN/KELUARGA YANG DATANG/ MUDIK</h5>
 		    <div class="table-responsive mb-3">
-			<table class="table table-sm border-bottom mb-0">
+			<table class="table border-bottom mb-0">
 			    <thead>
 			        <tr>
-			            <th>NO</th>
-			            <th>NAMA</th>
-			            <th>UMUR</th>
-			            <th class="text-nowrap" style="line-height:1">STATUS<br><small>DLM KELUARGA</small></th>
-			            <th>DEMAM</th>
-			            <th>BATUK</th>
-			            <th>SESAK NAPAS</th>
-			            <th style="line-height:1"><small>SAKIT</small><br>TENGGOROKAN</th>
-			            <th>ANOSMIA</th>
-			            <th>AGEUSIA</th>
-			            <th class="text-nowrap" style="line-height:1"><small>GUNAKAN</small><br>MASKER</th>
-			            <th class="text-nowrap" style="line-height:1"><small>GUNAKAN</small><br>HAND SANITIZER</th>
-			            <th class="text-nowrap" style="line-height:1">CUCI TANGAN<br><small>DG SABUN</small></th>
-			            <th class="text-nowrap">RIWAYAT PENYAKIT</th>
+			            <th class="py-2">NO</th>
+			            <th class="py-2">NAMA</th>
+			            <th class="py-2">UMUR</th>
+			            <th class="py-2 text-nowrap" style="line-height:1">STATUS<br><small>DLM KELUARGA</small></th>
+			            <th class="py-2">DEMAM</th>
+			            <th class="py-2">BATUK</th>
+			            <th class="py-2">SESAK NAPAS</th>
+			            <th class="py-2" style="line-height:1"><small>SAKIT</small><br>TENGGOROKAN</th>
+			            <th class="py-2">ANOSMIA</th>
+			            <th class="py-2">AGEUSIA</th>
+			            <th class="py-2 text-nowrap" style="line-height:1"><small>GUNAKAN</small><br>MASKER</th>
+			            <th class="py-2 text-nowrap" style="line-height:1"><small>GUNAKAN</small><br>HAND SANITIZER</th>
+			            <th class="py-2 text-nowrap" style="line-height:1">CUCI TANGAN<br><small>DG SABUN</small></th>
+			            <th class="py-2 text-nowrap">RIWAYAT PENYAKIT</th>
 			        </tr>
 			    </thead>
 		';
@@ -239,9 +278,18 @@ class HomeController extends Controller {
 		$html .= '
 			</table>
 			</div>
-		';
+		</div>';
+
+        if ( $has_foto ) {
+            $html .= '
+            <div class="tab-pane fade" id="detail-foto">
+                <h5 class="d-none">FOTO</h5>
+                <figure><a href="'. url('uploads/' . $data->foto) .'" target="_blank"><img src="'. url('uploads/' . $data->foto) .'" alt="" class="img-fluid" /></a></figure>
+            </div>';
+        }
 			
 		$html .= '
+        <div class="tab-pane fade" id="detail-penginput">
 		    <h5>DATA PENGINPUT</h5>
 			<table class="table table-sm border-bottom mb-0">
 				<tr>
@@ -265,7 +313,10 @@ class HomeController extends Controller {
 					<th>'. $data->sender_phone .'</th>
 				</tr>
 			</table>
-		';
+		</div>';
+        
+        $html .= '</div><!-- /.tab-content -->';
+        
 		$content = json_encode($html);
 		return response($content)->header('Content-Type', 'application/json');
     }
